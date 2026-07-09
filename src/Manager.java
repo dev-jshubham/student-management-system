@@ -1,3 +1,7 @@
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -53,26 +57,56 @@ public int checkInt(){
     public void details(){
         System.out.println("\nEnter no. of students:");
         int n=checkInt();
-        for (int i = 0; i < n; i++) {
-            System.out.println("\nEnter ID:");
-            int id=checkInt();
-            System.out.println("\nEnter name:");
-            String name=checkString();
-            System.out.println("\nGrade:  A   :   B   :   C   :   D   :   E");
-            System.out.println("Enter grade:");
-            char grade= checkChar();
-            students.add(new Student(id,name,grade));
+            String  sql="INSERT INTO students(id, name, grade) VALUES(?,?,?)";
+            try (
+                    Connection connection=DBConnection.getConnection();
+                    PreparedStatement preparedStatement=connection.prepareStatement(sql);
+                    ) {
+                for (int i = 0; i < n; i++){
+                    System.out.println("\nEnter ID:");
+                int id=checkInt();
+                System.out.println("\nEnter name:");
+                String name=checkString();
+                System.out.println("\nGrade:  A   :   B   :   C   :   D   :   E");
+                System.out.println("Enter grade:");
+                char grade= checkChar();
+                preparedStatement.setInt(1, id);
+                preparedStatement.setString(2, name);
+                preparedStatement.setString(3, String.valueOf(grade));
+                int rows = preparedStatement.executeUpdate();
+                if (rows > 0) {
+                    System.out.println("Student "+rows+"entered successfully");
+                }
+            }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
-    }
 
 
     public void getDetails(){
-        if(students.isEmpty()){
-            System.out.println("\nNo data.......");
-            return;
+        String sql = "SELECT * FROM students";
+        try (
+                Connection connection=DBConnection.getConnection();
+                PreparedStatement preparedStatement=connection.prepareStatement(sql);
+                ResultSet rs= preparedStatement.executeQuery();
+        ) {
+            boolean found = false;
+            while (rs.next()) {
+                found = true;
+                Student student = new Student(
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getString("grade").charAt(0)
+                );
+                System.out.println(student);
+            }
+            if(!found){
+                System.out.println("Data not found...........");
+            }
         }
-        for (Student student : students) {
-            System.out.println(student);
+        catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
