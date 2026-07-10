@@ -1,7 +1,4 @@
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -21,7 +18,7 @@ public class Manager {
             try {
                 return Integer.parseInt(sc.nextLine());
             } catch (NumberFormatException e) {
-                System.out.println("\nEnter a valid number:");
+                System.out.println("\n▶► Enter a valid number:");
             }
         }
     }
@@ -32,7 +29,7 @@ public class Manager {
             if (name.matches("[a-zA-Z ]+")) {
                 return name;
             } else {
-                System.out.println("\nEnter a valid name:");
+                System.out.println("\n▶► Enter a valid name:");
             }
         }
     }
@@ -46,17 +43,17 @@ public class Manager {
                         grade == 'E') {
                     return grade;
                 } else {
-                    System.out.println("\nEnter a valid grade:");
+                    System.out.println("\n▶► Enter a valid grade:");
                 }
             } catch (IndexOutOfBoundsException e) {
-                System.out.println("\nEnter a valid grade:");
+                System.out.println("\n▶► Enter a valid grade:");
             }
         }
     }
 
 
     public void details() {
-        System.out.println("\nEnter no. of students:");
+        System.out.println("\n▶► Enter number of students:");
         int n = checkInt();
         String sql = "INSERT INTO students(id, name, grade) VALUES(?,?,?)";
         try (
@@ -64,23 +61,26 @@ public class Manager {
                 PreparedStatement preparedStatement = connection.prepareStatement(sql);
         ) {
             for (int i = 0; i < n; i++) {
-                System.out.println("\nEnter ID:");
+                System.out.println("\n▶► Enter ID:");
                 int id = checkInt();
-                System.out.println("\nEnter name:");
+                System.out.println("\n▶► Enter name:");
                 String name = checkString();
-                System.out.println("\nGrade:  A   :   B   :   C   :   D   :   E");
-                System.out.println("Enter grade:");
+                System.out.println("\n◌◌◌◌     Grade:  A   :   B   :   C   :   D   :   E      ◌◌◌◌");
+                System.out.println("▶► Enter grade:");
                 char grade = checkChar();
                 preparedStatement.setInt(1, id);
                 preparedStatement.setString(2, name);
                 preparedStatement.setString(3, String.valueOf(grade));
                 int rows = preparedStatement.executeUpdate();
                 if (rows > 0) {
-                    System.out.println("Student " + rows + "entered successfully");
+                    System.out.println("\n◌◌◌◌Student ( ID =  " + id+ " ) added successfully.............◌◌◌◌");
                 }
             }
+        }
+        catch (SQLIntegrityConstraintViolationException e) {
+            System.out.println("◌◌◌◌Student already exists............◌◌◌◌");
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("◌◌◌◌◌◌Database Error :   ◌◌◌◌◌◌ " + e.getMessage());
         }
     }
 
@@ -103,7 +103,7 @@ public class Manager {
                 System.out.println(student);
             }
             if (!found) {
-                System.out.println("\nData not found...........");
+                System.out.println("\n◌◌◌◌No data found...........◌◌◌◌");
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -112,7 +112,7 @@ public class Manager {
 
 
     public void searchStudent() {
-        System.out.println("\nEnter the id of student you want to search:");
+        System.out.println("\n▶► Enter the id of student you want to search:");
         int searchid = checkInt();
         String sql = "SELECT * FROM students where id =?";
         try (
@@ -129,7 +129,7 @@ public class Manager {
                 );
                 System.out.println(student);
             } else {
-                System.out.println("\nNo data found.........");
+                System.out.println("\n◌◌◌◌No data found.........◌◌◌◌");
             }
             rs.close();
         } catch (SQLException e) {
@@ -139,7 +139,7 @@ public class Manager {
 
 
     public void updateDetail() {
-        System.out.println("\nEnter the id of student you want to update:");
+        System.out.println("\n▶► Enter the id of student you want to update:");
         int updateid = checkInt();
         String checkSql = "SELECT * FROM students WHERE id = ?";
         String sql = "UPDATE students SET name = ? WHERE id = ?;";
@@ -159,19 +159,19 @@ public class Manager {
                 );
                 System.out.println(student);
             } else {
-                System.out.println("\nNo data found............");
+                System.out.println("\n◌◌◌◌No data found............◌◌◌◌");
                 return;
             }
             rs.close();
-            System.out.println("\nEnter the updated name:");
+            System.out.println("\n▶► Enter the updated name:");
             String updatedName = checkString();
             preparedStatement.setString(1, updatedName);
             preparedStatement.setInt(2, updateid);
             int rows = preparedStatement.executeUpdate();
             if (rows > 0) {
-                System.out.println("\nName updated..........");
+                System.out.println("\n◌◌◌◌Name updated..........◌◌◌◌");
             } else {
-                System.out.println("\nNo student found with ID " + updateid);
+                System.out.println("\n◌◌◌◌No student found with ID " + updateid+"..........◌◌◌◌");
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -180,7 +180,7 @@ public class Manager {
 
 
     public void deleteData() {
-        System.out.println("\nEnter the id of student you want to delete:");
+        System.out.println("\n▶► Enter the id of student you want to delete:");
         int deleteid = checkInt();
         String sql = "DELETE FROM students WHERE id = ?;";
         try(
@@ -191,10 +191,10 @@ public class Manager {
             preparedStatement.setInt(1,deleteid);
             int rows = preparedStatement.executeUpdate();
             if(rows>0){
-                System.out.println("\n◌◌◌◌  Student data deleted successfully...... ◌◌◌◌");
+                System.out.println("\n◌◌◌◌  Student ( ID = " +deleteid+ " ) deleted successfully...... ◌◌◌◌");
             }
             else{
-                System.out.println("Wrong id entered............");
+                System.out.println("\n◌◌◌◌No data found............◌◌◌◌");
             }
        } catch (SQLException e) {
             e.printStackTrace();

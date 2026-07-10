@@ -17,7 +17,7 @@ public class Main {
             System.out.println("6. EXIT");
             System.out.println("------------------------------------------------------------------------------------");
             System.out.println();
-            System.out.println("\nENTER:");
+            System.out.println("\n▶► ENTER:");
             int function= manager.checkInt();
         switch (function) {
             case 1:
@@ -36,10 +36,10 @@ public class Main {
                 manager.deleteData();
                 break;
             case 6:
-                System.out.println("\nProgram ends........."+ "\nThank you!!!!");
+                System.out.println("\n◌◌◌◌Program ends.........◌◌◌◌"+ "\n◌◌◌◌Thank you!!!!◌◌◌◌");
                 return;
             default:
-                System.out.println("\nWrong input..................");
+                System.out.println("\n◌◌◌◌Wrong input..................◌◌◌◌");
                 break;
         }
         }
