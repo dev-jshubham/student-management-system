@@ -102,7 +102,7 @@ public int checkInt(){
                 System.out.println(student);
             }
             if(!found){
-                System.out.println("Data not found...........");
+                System.out.println("\nData not found...........");
             }
         }
         catch (SQLException e) {
@@ -111,18 +111,31 @@ public int checkInt(){
     }
 
 
-    public void searchStudent(){
+    public void searchStudent() {
         System.out.println("\nEnter the id of student you want to search:");
-        int searchid=checkInt();
-        boolean check = false;
-        for (Student student : students) {
-            if (searchid == student.getId()) {
+        int searchid = checkInt();
+        String sql = "SELECT * FROM students where id =?";
+        try (
+                Connection connection=DBConnection.getConnection();
+                PreparedStatement preparedStatement=connection.prepareStatement(sql);
+        ) {
+            preparedStatement.setInt(1, searchid);
+            ResultSet rs= preparedStatement.executeQuery();
+            if (rs.next()) {
+                Student student = new Student(
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getString("grade").charAt(0)
+                );
                 System.out.println(student);
-                check=true;
             }
+            else {
+                System.out.println("\nNo data found.........");
+            }
+            rs.close();
         }
-        if(!check){
-            System.out.println("\nNo result found......");
+        catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
@@ -130,24 +143,44 @@ public int checkInt(){
     public void updateDetail(){
         System.out.println("\nEnter the id of student you want to update:");
         int updateid=checkInt();
-        boolean check = false;
-        for (Student student : students) {
-            if (updateid == student.getId()) {
+        String checkSql = "SELECT * FROM students WHERE id = ?";
+        String sql = "UPDATE students SET name = ? WHERE id = ?;";
+        try (
+                Connection connection = DBConnection.getConnection();
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                PreparedStatement preparedStatement1 = connection.prepareStatement(checkSql);
+                        )
+        {
+            preparedStatement1.setInt(1,updateid);
+            ResultSet rs = preparedStatement1.executeQuery();
+            boolean found = false;
+            if (rs.next()) {
+                Student student = new Student(
+                        rs.getInt("id"),
+                        rs.getString("name"),
+                        rs.getString("grade").charAt(0)
+                );
                 System.out.println(student);
-                check=true;
             }
-        }
-        if(!check){
-            System.out.println("\nNo result found......");
-            return;
-        }
-    System.out.println("\nEnter the updated name");
-        String updatedName=checkString();
-        for (Student student:students){
-            if(updateid==student.getId()){
-                student.setName(updatedName);
-                System.out.println("\n◌◌◌◌  Student name updated successfully...... ◌◌◌◌");
+            else {
+                System.out.println("\nNo data found............");
+                return;
             }
+            rs.close();
+            System.out.println("\nEnter the updated name:");
+            String updatedName = checkString();
+        preparedStatement.setString(1,updatedName);
+        preparedStatement.setInt(2,updateid);
+        int rows = preparedStatement.executeUpdate();
+        if(rows>0){
+            System.out.println("\nName updated..........");
+        }
+        else {
+            System.out.println("\nNo student found with ID " + updateid);
+        }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
