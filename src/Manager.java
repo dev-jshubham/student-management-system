@@ -11,8 +11,6 @@ public class Manager {
         this.sc = sc;
     }
 
-    List<Student> students = new ArrayList<>();
-
     public int checkInt() {
         while (true) {
             try {
