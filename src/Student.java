@@ -26,6 +26,25 @@ public class Student {
         return (getTotal()/500.0)*100;
     }
 
+    public char getGrade(){
+        double percentage = getPercentage();
+        if(percentage>=90.0){
+            return 'A';
+        }
+        else if(percentage>=80.0){
+            return 'B';
+        }
+        else if(percentage >=70.0){
+            return 'C';
+        }
+        else if(percentage >=60.0){
+            return 'D';
+        }
+        else{
+            return 'F';
+        }
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -50,6 +69,7 @@ public class Student {
                 "Hindi     : " + hindi + "\n" +
                 "Total Marks : " + getTotal() + " / 500" +"\n" +
                 "Percentage : " + String.format("%.2f",getPercentage()) + " %" +"\n" +
+                "Grade : " + getGrade()+ "\n" +
                 "------------------------------------------------------";
     }
 }
