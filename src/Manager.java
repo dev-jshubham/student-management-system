@@ -32,28 +32,10 @@ public class Manager {
         }
     }
 
-    public char checkChar() {
-        while (true) {
-            try {
-                char grade = Character.toUpperCase(sc.nextLine().charAt(0));
-                if (grade == 'A' || grade == 'B' ||
-                        grade == 'C' || grade == 'D' ||
-                        grade == 'E') {
-                    return grade;
-                } else {
-                    System.out.println("\n▶► Enter a valid grade:");
-                }
-            } catch (IndexOutOfBoundsException e) {
-                System.out.println("\n▶► Enter a valid grade:");
-            }
-        }
-    }
-
-
     public void details() {
         System.out.println("\n▶► Enter number of students:");
         int n = checkInt();
-        String sql = "INSERT INTO students(id, name, grade) VALUES(?,?,?)";
+        String sql = "INSERT INTO students(id, name,english,hindi,maths,science,computer) VALUES(?,?,?,?,?,?,?)";
         try (
                 Connection connection = DBConnection.getConnection();
                 PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -63,12 +45,24 @@ public class Manager {
                 int id = checkInt();
                 System.out.println("\n▶► Enter name:");
                 String name = checkString();
-                System.out.println("\n◌◌◌◌     Grade:  A   :   B   :   C   :   D   :   E      ◌◌◌◌");
-                System.out.println("▶► Enter grade:");
-                char grade = checkChar();
+                System.out.println("\n▶► Enter marks:");
+                System.out.println("\n▶► English : ");
+                int english = checkInt();
+                System.out.println("▶► Science : ");
+                int science = checkInt();
+                System.out.println("▶► Maths : ");
+                int maths = checkInt();
+                System.out.println("▶► Hindi : ");
+                int hindi = checkInt();
+                System.out.println("▶► Computer : ");
+                int computer = checkInt();
                 preparedStatement.setInt(1, id);
                 preparedStatement.setString(2, name);
-                preparedStatement.setString(3, String.valueOf(grade));
+                preparedStatement.setInt(3, english);
+                preparedStatement.setInt(4, hindi);
+                preparedStatement.setInt(5, maths);
+                preparedStatement.setInt(6, science);
+                preparedStatement.setInt(7, computer);
                 int rows = preparedStatement.executeUpdate();
                 if (rows > 0) {
                     System.out.println("\n◌◌◌◌Student ( ID =  " + id+ " ) added successfully.............◌◌◌◌");
@@ -96,7 +90,11 @@ public class Manager {
                 Student student = new Student(
                         rs.getInt("id"),
                         rs.getString("name"),
-                        rs.getString("grade").charAt(0)
+                        rs.getInt("english"),
+                        rs.getInt("maths"),
+                        rs.getInt("science"),
+                        rs.getInt("computer"),
+                        rs.getInt("hindi")
                 );
                 System.out.println(student);
             }
@@ -123,7 +121,11 @@ public class Manager {
                 Student student = new Student(
                         rs.getInt("id"),
                         rs.getString("name"),
-                        rs.getString("grade").charAt(0)
+                        rs.getInt("english"),
+                        rs.getInt("maths"),
+                        rs.getInt("science"),
+                        rs.getInt("computer"),
+                        rs.getInt("hindi")
                 );
                 System.out.println(student);
             } else {
@@ -153,7 +155,11 @@ public class Manager {
                 Student student = new Student(
                         rs.getInt("id"),
                         rs.getString("name"),
-                        rs.getString("grade").charAt(0)
+                        rs.getInt("english"),
+                        rs.getInt("maths"),
+                        rs.getInt("science"),
+                        rs.getInt("computer"),
+                        rs.getInt("hindi")
                 );
                 System.out.println(student);
             } else {

@@ -12,7 +12,11 @@ USE project1_sms;
 CREATE TABLE IF NOT EXISTS students (
                                         id INT PRIMARY KEY,
                                         name VARCHAR(100) NOT NULL,
-    grade CHAR(1) NOT NULL
+                                        english INT NOT NULL,
+                                        maths INT NOT NULL,
+                                        science INT NOT NULL,
+                                        hindi INT NOT NULL,
+                                        computer INT NOT NULL
     );
 
 -- =====================================================
