@@ -1,4 +1,5 @@
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Manager {
@@ -335,8 +336,6 @@ public class Manager {
                 }
 
 
-
-
                 public void deleteData() {
                     System.out.println("\n▶► Enter the id of student you want to delete:");
                     int deleteid = checkInt();
@@ -354,6 +353,83 @@ public class Manager {
                             System.out.println("⚠️ No data found.");
                         }
                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+
+                public void fullRanking(){
+                String sql = "SELECT * FROM students;";
+                    try(
+                            Connection connection = DBConnection.getConnection();
+                            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                    )
+                    {
+                        ArrayList<Student> arrayList = new ArrayList<>();
+                        try(
+                                ResultSet resultSet = preparedStatement.executeQuery();
+                        ) {
+                            while (resultSet.next()) {
+                                Student students = new Student(
+                                        resultSet.getInt("id"),
+                                        resultSet.getString("name"),
+                                        resultSet.getInt("english"),
+                                        resultSet.getInt("maths"),
+                                        resultSet.getInt("science"),
+                                        resultSet.getInt("computer"),
+                                        resultSet.getInt("hindi")
+                                );
+                                arrayList.add(students);
+                        }
+                            if(arrayList.isEmpty()){
+                                System.out.println("⚠️ No data found.");
+                                return;
+                            }
+                            arrayList.sort((s1,s2)->s2.getTotal()- s1.getTotal());
+                            int rank = 1;
+                            System.out.println("""
+                            ══════════════════════════════════════════════════════
+                                           🏆 STUDENT RANKING 🏆
+                            ══════════════════════════════════════════════════════
+                            """);
+                            for(Student student:arrayList){
+                                String medal;
+                                if (rank == 1) {
+                                    medal = "🥇";
+                                } else if (rank == 2) {
+                                    medal = "🥈";
+                                } else if (rank == 3) {
+                                    medal = "🥉";
+                                } else {
+                                    medal = "🏅";
+                                }
+
+                                System.out.println("\n" + medal + " Rank : " + rank);
+
+                                System.out.printf("""
+                                ╭──────────────────────────────────────────────────────────────╮
+                                │ ID          : %-46d│
+                                │ Name        : %-46s│
+                                ├──────────────────────────────────────────────────────────────┤
+                                │ Total Marks : %-46s│
+                                │ Percentage  : %-46s│
+                                │ Grade       : %-46c│
+                                ╰──────────────────────────────────────────────────────────────╯
+                                """,
+                                        student.getId(),
+                                        student.getName(),
+                                        student.getTotal() + " / 500",
+                                        String.format("%.2f %%", student.getPercentage()),
+                                        student.getGrade());
+                                rank++;
+                            }
+                            System.out.println("""
+                            ══════════════════════════════════════════════════════
+                                       ◌◌◌◌ End of Ranking ◌◌◌◌
+                            ══════════════════════════════════════════════════════
+                            """);
+                        }
+                    } catch (SQLException e) {
                         e.printStackTrace();
                     }
                 }

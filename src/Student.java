@@ -7,6 +7,25 @@ public class Student {
     private int computer;
     private int hindi;
 
+    public int getEnglish() {
+        return english;
+    }
+
+    public int getMaths() {
+        return maths;
+    }
+
+    public int getScience() {
+        return science;
+    }
+
+    public int getComputer() {
+        return computer;
+    }
+
+    public int getHindi() {
+        return hindi;
+    }
 
     public Student(int id, String name, int english, int maths, int science, int computer, int hindi) {
         this.id = id;

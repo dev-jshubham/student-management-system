@@ -71,7 +71,8 @@ public class Main {
         """);
                 manager.deleteData();
             }
-            case 6->{
+            case 6->manager.fullRanking();
+            case 7->{
                 System.out.println();
                 System.out.println("""
                 ╔══════════════════════════════════════╗
