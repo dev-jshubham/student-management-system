@@ -1,6 +1,4 @@
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class Manager {
@@ -142,15 +140,14 @@ public class Manager {
         System.out.println("\n▶► Enter the id of student you want to update:");
         int updateid = checkInt();
         String checkSql = "SELECT * FROM students WHERE id = ?";
-        String sql = "UPDATE students SET name = ? WHERE id = ?;";
         try (
                 Connection connection = DBConnection.getConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement(sql);
-                PreparedStatement preparedStatement1 = connection.prepareStatement(checkSql);
+                PreparedStatement preparedStatement = connection.prepareStatement(checkSql);
         ) {
-            preparedStatement1.setInt(1, updateid);
-            ResultSet rs = preparedStatement1.executeQuery();
-            boolean found = false;
+            preparedStatement.setInt(1, updateid);
+            try (
+                 ResultSet rs = preparedStatement.executeQuery();
+                 ){
             if (rs.next()) {
                 Student student = new Student(
                         rs.getInt("id"),
@@ -166,42 +163,178 @@ public class Manager {
                 System.out.println("\n◌◌◌◌No data found............◌◌◌◌");
                 return;
             }
-            rs.close();
-            System.out.println("\n▶► Enter the updated name:");
-            String updatedName = checkString();
-            preparedStatement.setString(1, updatedName);
-            preparedStatement.setInt(2, updateid);
-            int rows = preparedStatement.executeUpdate();
-            if (rows > 0) {
-                System.out.println("\n◌◌◌◌Name updated..........◌◌◌◌");
-            } else {
-                System.out.println("\n◌◌◌◌No student found with ID " + updateid+"..........◌◌◌◌");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-    }
+            System.out.println("""
+            ====================================
+            UPDATE STUDENT
+            ====================================
+
+            SELECT AN OPTION:
+
+            1. Name
+            2. English Marks
+            3. Maths Marks
+            4. Science Marks
+            5. Computer Marks
+            6. Hindi Marks
+            7. Update All Marks
+            8. Exit
+
+            Enter your choice:
+            """);
+            int updateOption = checkInt();
+            switch (updateOption){
+                case 1->{
+                    System.out.println("\n▶► Enter the updated name:");
+                    String updatedName = checkString();
+                    String sql = "Update students SET name = ? WHERE id = ?";
+                    try (
+                            PreparedStatement preparedStatement1 = connection.prepareStatement(sql);
+                            ){
+                        preparedStatement1.setString(1,updatedName);
+                        preparedStatement1.setInt(2,updateid);
+                        int rows = preparedStatement1.executeUpdate();
+                        if (rows > 0) {
+                            System.out.println("\n◌◌◌◌Name updated..........◌◌◌◌");
+                        }
+                    }
+                }
+                case 2-> {
+                    System.out.println("\n▶► Enter the updated English marks:");
+                    int updatedMarks = checkInt();
+                    String sql = "Update students SET english = ? WHERE id = ?";
+                    try (
+                            PreparedStatement preparedStatement1 = connection.prepareStatement(sql);
+                    ){
+                        preparedStatement1.setInt(1,updatedMarks);
+                        preparedStatement1.setInt(2,updateid);
+                        int rows = preparedStatement1.executeUpdate();
+                        if (rows > 0) {
+                            System.out.println("\n◌◌◌◌English Marks updated..........◌◌◌◌");
+                        }
+                    }
+                }
+                case 3->{
+                    System.out.println("\n▶► Enter the updated Maths marks:");
+                    int updatedMarks = checkInt();
+                    String sql = "Update students SET maths = ? WHERE id = ?";
+                    try (
+                            PreparedStatement preparedStatement1 = connection.prepareStatement(sql);
+                    ){
+                        preparedStatement1.setInt(1,updatedMarks);
+                        preparedStatement1.setInt(2,updateid);
+                        int rows = preparedStatement1.executeUpdate();
+                        if (rows > 0) {
+                            System.out.println("\n◌◌◌◌Maths Marks updated..........◌◌◌◌");
+                        }
+                    }
+                }
+                case 4->{
+                    System.out.println("\n▶► Enter the updated Science marks:");
+                    int updatedMarks = checkInt();
+                    String sql = "Update students SET science = ? WHERE id = ?";
+                    try (
+                            PreparedStatement preparedStatement1 = connection.prepareStatement(sql);
+                    ){
+                        preparedStatement1.setInt(1,updatedMarks);
+                        preparedStatement1.setInt(2,updateid);
+                        int rows = preparedStatement1.executeUpdate();
+                        if (rows > 0) {
+                            System.out.println("\n◌◌◌◌Science Marks updated..........◌◌◌◌");
+                        }
+                    }
+                }
+                case 5->{
+                    System.out.println("\n▶► Enter the updated Computer marks:");
+                    int updatedMarks = checkInt();
+                    String sql = "Update students SET computer = ? WHERE id = ?";
+                    try (
+                            PreparedStatement preparedStatement1 = connection.prepareStatement(sql);
+                    ){
+                        preparedStatement1.setInt(1,updatedMarks);
+                        preparedStatement1.setInt(2,updateid);
+                        int rows = preparedStatement1.executeUpdate();
+                        if (rows > 0) {
+                            System.out.println("\n◌◌◌◌Computer Marks updated..........◌◌◌◌");
+                        }
+                    }
+                }
+                case 6->{
+                    System.out.println("\n▶► Enter the updated Hindi marks:");
+                    int updatedMarks = checkInt();
+                    String sql = "Update students SET hindi = ? WHERE id = ?";
+                    try (
+                            PreparedStatement preparedStatement1 = connection.prepareStatement(sql);
+                    ){
+                        preparedStatement1.setInt(1,updatedMarks);
+                        preparedStatement1.setInt(2,updateid);
+                        int rows = preparedStatement1.executeUpdate();
+                        if (rows > 0) {
+                            System.out.println("\n◌◌◌◌Hindi Marks updated..........◌◌◌◌");
+                        }
+                    }
+                }
+                case 7->{
+                    System.out.println("\n▶► Enter the updated English marks:");
+                    int english = checkInt();
+                    System.out.println("\n▶► Enter the updated Science marks:");
+                    int science = checkInt();
+                    System.out.println("\n▶► Enter the updated Hindi marks:");
+                    int hindi = checkInt();
+                    System.out.println("\n▶► Enter the updated Maths marks:");
+                    int maths = checkInt();
+                    System.out.println("\n▶► Enter the updated Computer marks:");
+                    int computer = checkInt();
+                    String sql = "Update students SET english = ?, maths = ? , science = ? , hindi = ? , computer = ? WHERE id = ?";
+                    try (
+                            PreparedStatement preparedStatement1 = connection.prepareStatement(sql);
+                    ){
+                        preparedStatement1.setInt(1, english);
+                        preparedStatement1.setInt(2, maths);
+                        preparedStatement1.setInt(3, science);
+                        preparedStatement1.setInt(4, hindi);
+                        preparedStatement1.setInt(5, computer);
+                        preparedStatement1.setInt(6,updateid);
+                        int rows = preparedStatement1.executeUpdate();
+                        if (rows > 0) {
+                            System.out.println("\n◌◌◌◌ Marks updated..........◌◌◌◌");
+                        }
+                    }
+                }
+                case 8->{
+                    System.out.println("\n◌◌◌◌Quit Update............◌◌◌◌");
+                    return;
+                }
+                default ->
+                    System.out.println("\n◌◌◌◌Wrong input..................◌◌◌◌");
+            }
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
 
 
-    public void deleteData() {
-        System.out.println("\n▶► Enter the id of student you want to delete:");
-        int deleteid = checkInt();
-        String sql = "DELETE FROM students WHERE id = ?;";
-        try(
-                Connection connection = DBConnection.getConnection();
-                PreparedStatement preparedStatement = connection.prepareStatement(sql);
-                )
-        {
-            preparedStatement.setInt(1,deleteid);
-            int rows = preparedStatement.executeUpdate();
-            if(rows>0){
-                System.out.println("\n◌◌◌◌  Student ( ID = " +deleteid+ " ) deleted successfully...... ◌◌◌◌");
+
+
+                public void deleteData() {
+                    System.out.println("\n▶► Enter the id of student you want to delete:");
+                    int deleteid = checkInt();
+                    String sql = "DELETE FROM students WHERE id = ?;";
+                    try(
+                            Connection connection = DBConnection.getConnection();
+                            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                            )
+                    {
+                        preparedStatement.setInt(1,deleteid);
+                        int rows = preparedStatement.executeUpdate();
+                        if(rows>0){
+                            System.out.println("\n◌◌◌◌  Student ( ID = " +deleteid+ " ) deleted successfully...... ◌◌◌◌");
+                        }
+                        else{
+                            System.out.println("\n◌◌◌◌No data found............◌◌◌◌");
+                        }
+                   } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
-            else{
-                System.out.println("\n◌◌◌◌No data found............◌◌◌◌");
-            }
-       } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-}

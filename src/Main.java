@@ -20,27 +20,22 @@ public class Main {
             System.out.println("\n▶► ENTER:");
             int function= manager.checkInt();
         switch (function) {
-            case 1:
+            case 1->
                 manager.details();
-                break;
-            case 2:
+            case 2->
                 manager.getDetails();
-                break;
-            case 3:
+            case 3->
                 manager.searchStudent();
-                break;
-            case 4:
+            case 4->
                 manager.updateDetail();
-                break;
-            case 5:
+            case 5->
                 manager.deleteData();
-                break;
-            case 6:
+            case 6->{
                 System.out.println("\n◌◌◌◌Program ends.........◌◌◌◌"+ "\n◌◌◌◌Thank you!!!!◌◌◌◌");
                 return;
-            default:
+            }
+            default->
                 System.out.println("\n◌◌◌◌Wrong input..................◌◌◌◌");
-                break;
         }
         }
     }
