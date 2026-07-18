@@ -26,7 +26,9 @@ public class Main {
             ║  3. 🔍  Search Student                                       ║
             ║  4. ✏️  Update Student                                       ║
             ║  5. 🗑️  Delete Student                                       ║
-            ║  6. 🚪  Exit                                                 ║
+            ║  6. 🥇  View Ranking                                         ║
+            ║  7. 📊 Class Statistics                                      ║
+            ║  8. 🚪  Exit                                                 ║
             ╚══════════════════════════════════════════════════════════════╝
             
             ▶ Enter your choice:
@@ -45,10 +47,11 @@ public class Main {
             case 2-> {
                 System.out.println();
                 System.out.println("""
-            ╭──────────────────────────────╮
-            │      📋 ALL STUDENTS          │
-            ╰──────────────────────────────╯
-            """);
+                ══════════════════════════════════════════════════════
+                                📋 ALL STUDENTS
+                ══════════════════════════════════════════════════════
+                """);
+
                 manager.getDetails();
             }
             case 3->{
@@ -72,7 +75,8 @@ public class Main {
                 manager.deleteData();
             }
             case 6->manager.fullRanking();
-            case 7->{
+            case 7->manager.getStatistics();
+            case 8->{
                 System.out.println();
                 System.out.println("""
                 ╔══════════════════════════════════════╗

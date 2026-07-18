@@ -93,6 +93,7 @@ public class Manager {
                 PreparedStatement preparedStatement = connection.prepareStatement(sql);
                 ResultSet rs = preparedStatement.executeQuery();
         ) {
+            int studentNo = 1;
             boolean found = false;
             while (rs.next()) {
                 found = true;
@@ -105,8 +106,10 @@ public class Manager {
                         rs.getInt("computer"),
                         rs.getInt("hindi")
                 );
+                System.out.println("👤 Student #" + studentNo);
                 System.out.println(student);
-            }
+                System.out.println();
+                studentNo++;            }
             if (!found) {
                 System.out.println("⚠️ No data found.");
             }
@@ -392,35 +395,43 @@ public class Manager {
                                            🏆 STUDENT RANKING 🏆
                             ══════════════════════════════════════════════════════
                             """);
-                            for(Student student:arrayList){
+                            for (Student student : arrayList) {
+
                                 String medal;
+                                String title;
+
                                 if (rank == 1) {
                                     medal = "🥇";
+                                    title = "GOLD MEDAL";
                                 } else if (rank == 2) {
                                     medal = "🥈";
+                                    title = "SILVER MEDAL";
                                 } else if (rank == 3) {
                                     medal = "🥉";
+                                    title = "BRONZE MEDAL";
                                 } else {
                                     medal = "🏅";
+                                    title = "STUDENT RANK";
                                 }
 
-                                System.out.println("\n" + medal + " Rank : " + rank);
-
+                                System.out.println();
+                                System.out.println("────────────── " + medal + "  " + title + "  |  Rank : " + rank+" ──────────────");
                                 System.out.printf("""
-                                ╭──────────────────────────────────────────────────────────────╮
-                                │ ID          : %-46d│
-                                │ Name        : %-46s│
-                                ├──────────────────────────────────────────────────────────────┤
-                                │ Total Marks : %-46s│
-                                │ Percentage  : %-46s│
-                                │ Grade       : %-46c│
-                                ╰──────────────────────────────────────────────────────────────╯
-                                """,
+            ╭─────────────────────────────────────────────────────────────╮
+            │ ID          : %-46d│
+            │ Name        : %-46s│
+            ├─────────────────────────────────────────────────────────────┤
+            │ Total Marks : %-46s│
+            │ Percentage  : %-46s│
+            │ Grade       : %-46c│
+            ╰─────────────────────────────────────────────────────────────╯
+            """,
                                         student.getId(),
                                         student.getName(),
                                         student.getTotal() + " / 500",
                                         String.format("%.2f %%", student.getPercentage()),
                                         student.getGrade());
+
                                 rank++;
                             }
                             System.out.println("""
@@ -428,6 +439,73 @@ public class Manager {
                                        ◌◌◌◌ End of Ranking ◌◌◌◌
                             ══════════════════════════════════════════════════════
                             """);
+                        }
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+
+                public void getStatistics(){
+                    String sql = "SELECT * FROM students;";
+                    try(
+                            Connection connection = DBConnection.getConnection();
+                            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                    )
+                    {
+                        ArrayList<Student> arrayList = new ArrayList<>();
+                        try(
+                                ResultSet resultSet = preparedStatement.executeQuery();
+                        ) {
+                            while (resultSet.next()) {
+                                Student students = new Student(
+                                        resultSet.getInt("id"),
+                                        resultSet.getString("name"),
+                                        resultSet.getInt("english"),
+                                        resultSet.getInt("maths"),
+                                        resultSet.getInt("science"),
+                                        resultSet.getInt("computer"),
+                                        resultSet.getInt("hindi")
+                                );
+                                arrayList.add(students);
+                            }
+                            if(arrayList.isEmpty()){
+                                System.out.println("⚠️ No data found.");
+                                return;
+                            }
+
+                            Student highest = arrayList.get(0);
+                            for (Student student:arrayList){
+                                if(student.getTotal()>highest.getTotal()){
+                                    highest = student;
+                                }
+                            }
+
+                            Student lowest = arrayList.get(0);
+                            for (Student student:arrayList){
+                                if(student.getTotal()<lowest.getTotal()){
+                                    lowest = student;
+                                }
+                            }
+
+                            int totalMarks = 0;
+                            for (Student student:arrayList){
+                            totalMarks = totalMarks+student.getTotal();
+                            }
+                            double average = (double) totalMarks / arrayList.size();
+
+                            System.out.println("╭──────────────────────────────────────────────────────────────╮");
+                            System.out.printf("│%-60s│%n", "📊 CLASS STATISTICS");
+                            System.out.println("├──────────────────────────────────────────────────────────────┤");
+
+                            System.out.printf("│ %-60s │%n", "Total Students : " + arrayList.size());
+                            System.out.printf("│ %-60s │%n", "Topper         : " + highest.getName());
+                            System.out.printf("│ %-60s │%n", "Highest Marks  : " + highest.getTotal() + " / 500");
+                            System.out.printf("│ %-60s │%n", "Lowest Student : " + lowest.getName());
+                            System.out.printf("│ %-60s │%n", "Lowest Marks   : " + lowest.getTotal() + " / 500");
+                            System.out.printf("│ %-60s │%n", "Average Marks  : " + String.format("%.2f", average));
+
+                            System.out.println("╰──────────────────────────────────────────────────────────────╯");
                         }
                     } catch (SQLException e) {
                         e.printStackTrace();
