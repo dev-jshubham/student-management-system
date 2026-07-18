@@ -59,17 +59,34 @@ public class Student {
 
     @Override
     public String toString() {
-        return "------------------------------------------------------\n" +
-                "ID        : " + id + "\n" +
-                "Name      : " + name + "\n" +
-                "English   : " + english + "\n" +
-                "Maths     : " + maths + "\n" +
-                "Science   : " + science + "\n" +
-                "Computer  : " + computer + "\n" +
-                "Hindi     : " + hindi + "\n" +
-                "Total Marks : " + getTotal() + " / 500" +"\n" +
-                "Percentage : " + String.format("%.2f",getPercentage()) + " %" +"\n" +
-                "Grade : " + getGrade()+ "\n" +
-                "------------------------------------------------------";
+        return String.format("""
+╭──────────────────────────────────────────────────────────────╮
+│                     STUDENT PROFILE                          │
+├──────────────────────────────────────────────────────────────┤
+│ ID          : %-46d│
+│ Name        : %-46s│
+├──────────────────────────────────────────────────────────────┤
+│ English     : %-46d│
+│ Maths       : %-46d│
+│ Science     : %-46d│
+│ Computer    : %-46d│
+│ Hindi       : %-46d│
+├──────────────────────────────────────────────────────────────┤
+│ Total       : %-46s│
+│ Percentage  : %-46s│
+│ Grade       : %-46c│
+╰──────────────────────────────────────────────────────────────╯
+""",
+                id,
+                name,
+                english,
+                maths,
+                science,
+                computer,
+                hindi,
+                getTotal() + " / 500",
+                String.format("%.2f %%", getPercentage()),
+                getGrade()
+        );
     }
 }

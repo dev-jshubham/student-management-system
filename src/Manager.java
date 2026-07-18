@@ -14,7 +14,18 @@ public class Manager {
             try {
                 return Integer.parseInt(sc.nextLine());
             } catch (NumberFormatException e) {
-                System.out.println("\n▶► Enter a valid number:");
+                System.out.println("❌ Invalid Input! Please try again.");
+            }
+        }
+    }
+
+    public int checkMarks() {
+        while (true) {
+            int marks = checkInt();
+            if (marks >= 0 && marks <= 100) {
+                return marks;
+            } else {
+                System.out.println("⚠️ Marks should be between 0 and 100.");
             }
         }
     }
@@ -25,7 +36,7 @@ public class Manager {
             if (name.matches("[a-zA-Z ]+")) {
                 return name;
             } else {
-                System.out.println("\n▶► Enter a valid name:");
+                System.out.println("❌ Invalid Input! Please try again.");
             }
         }
     }
@@ -43,17 +54,16 @@ public class Manager {
                 int id = checkInt();
                 System.out.println("\n▶► Enter name:");
                 String name = checkString();
-                System.out.println("\n▶► Enter marks:");
                 System.out.println("\n▶► English : ");
-                int english = checkInt();
+                int english = checkMarks();
                 System.out.println("▶► Science : ");
-                int science = checkInt();
+                int science = checkMarks();
                 System.out.println("▶► Maths : ");
-                int maths = checkInt();
+                int maths = checkMarks();
                 System.out.println("▶► Hindi : ");
-                int hindi = checkInt();
+                int hindi = checkMarks();
                 System.out.println("▶► Computer : ");
-                int computer = checkInt();
+                int computer = checkMarks();
                 preparedStatement.setInt(1, id);
                 preparedStatement.setString(2, name);
                 preparedStatement.setInt(3, english);
@@ -63,14 +73,14 @@ public class Manager {
                 preparedStatement.setInt(7, computer);
                 int rows = preparedStatement.executeUpdate();
                 if (rows > 0) {
-                    System.out.println("\n◌◌◌◌Student ( ID =  " + id+ " ) added successfully.............◌◌◌◌");
+                    System.out.println("\n✅ Student ( ID = " + id + " ) added successfully.");
                 }
             }
         }
         catch (SQLIntegrityConstraintViolationException e) {
-            System.out.println("◌◌◌◌Student already exists............◌◌◌◌");
+            System.out.println("⚠️ Student already exists.");
         } catch (SQLException e) {
-            System.out.println("◌◌◌◌◌◌Database Error :   ◌◌◌◌◌◌ " + e.getMessage());
+            System.out.println("❌ Database Error: " + e.getMessage());
         }
     }
 
@@ -97,7 +107,7 @@ public class Manager {
                 System.out.println(student);
             }
             if (!found) {
-                System.out.println("\n◌◌◌◌No data found...........◌◌◌◌");
+                System.out.println("⚠️ No data found.");
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -127,7 +137,7 @@ public class Manager {
                 );
                 System.out.println(student);
             } else {
-                System.out.println("\n◌◌◌◌No data found.........◌◌◌◌");
+                System.out.println("⚠️ No data found.");
             }
             rs.close();
         } catch (SQLException e) {
@@ -160,28 +170,26 @@ public class Manager {
                 );
                 System.out.println(student);
             } else {
-                System.out.println("\n◌◌◌◌No data found............◌◌◌◌");
+                System.out.println("⚠️ No data found.");
                 return;
             }
         }
             System.out.println("""
-            ====================================
-            UPDATE STUDENT
-            ====================================
+        ╭──────────────────────────────────────╮
+        │           ✏️ UPDATE STUDENT            │
+        ├──────────────────────────────────────┤
+        │  1. 👤 Update Name                    │
+        │  2. 📖 Update English Marks           │
+        │  3. 📐 Update Maths Marks             │
+        │  4. 🔬 Update Science Marks           │
+        │  5. 💻 Update Computer Marks          │
+        │  6. 📝 Update Hindi Marks             │
+        │  7. 📚 Update All Marks               │
+        │  8. 🔙 Back                           │
+        ╰──────────────────────────────────────╯
 
-            SELECT AN OPTION:
-
-            1. Name
-            2. English Marks
-            3. Maths Marks
-            4. Science Marks
-            5. Computer Marks
-            6. Hindi Marks
-            7. Update All Marks
-            8. Exit
-
-            Enter your choice:
-            """);
+        ▶ Enter your choice:
+        """);
             int updateOption = checkInt();
             switch (updateOption){
                 case 1->{
@@ -195,13 +203,15 @@ public class Manager {
                         preparedStatement1.setInt(2,updateid);
                         int rows = preparedStatement1.executeUpdate();
                         if (rows > 0) {
-                            System.out.println("\n◌◌◌◌Name updated..........◌◌◌◌");
+                            System.out.println("✅ Name updated successfully.");
+                        } else {
+                            System.out.println("⚠️ Nothing was updated.");
                         }
                     }
                 }
                 case 2-> {
                     System.out.println("\n▶► Enter the updated English marks:");
-                    int updatedMarks = checkInt();
+                    int updatedMarks = checkMarks();
                     String sql = "Update students SET english = ? WHERE id = ?";
                     try (
                             PreparedStatement preparedStatement1 = connection.prepareStatement(sql);
@@ -210,13 +220,15 @@ public class Manager {
                         preparedStatement1.setInt(2,updateid);
                         int rows = preparedStatement1.executeUpdate();
                         if (rows > 0) {
-                            System.out.println("\n◌◌◌◌English Marks updated..........◌◌◌◌");
+                            System.out.println("✅ English marks updated successfully.");
+                        } else {
+                            System.out.println("⚠️ Nothing was updated.");
                         }
                     }
                 }
                 case 3->{
                     System.out.println("\n▶► Enter the updated Maths marks:");
-                    int updatedMarks = checkInt();
+                    int updatedMarks = checkMarks();
                     String sql = "Update students SET maths = ? WHERE id = ?";
                     try (
                             PreparedStatement preparedStatement1 = connection.prepareStatement(sql);
@@ -225,13 +237,15 @@ public class Manager {
                         preparedStatement1.setInt(2,updateid);
                         int rows = preparedStatement1.executeUpdate();
                         if (rows > 0) {
-                            System.out.println("\n◌◌◌◌Maths Marks updated..........◌◌◌◌");
+                            System.out.println("✅ Maths marks updated successfully.");
+                        } else {
+                            System.out.println("⚠️ Nothing was updated.");
                         }
                     }
                 }
                 case 4->{
                     System.out.println("\n▶► Enter the updated Science marks:");
-                    int updatedMarks = checkInt();
+                    int updatedMarks = checkMarks();
                     String sql = "Update students SET science = ? WHERE id = ?";
                     try (
                             PreparedStatement preparedStatement1 = connection.prepareStatement(sql);
@@ -240,13 +254,15 @@ public class Manager {
                         preparedStatement1.setInt(2,updateid);
                         int rows = preparedStatement1.executeUpdate();
                         if (rows > 0) {
-                            System.out.println("\n◌◌◌◌Science Marks updated..........◌◌◌◌");
+                            System.out.println("✅ Science marks updated successfully.");
+                        } else {
+                            System.out.println("⚠️ Nothing was updated.");
                         }
                     }
                 }
                 case 5->{
                     System.out.println("\n▶► Enter the updated Computer marks:");
-                    int updatedMarks = checkInt();
+                    int updatedMarks = checkMarks();
                     String sql = "Update students SET computer = ? WHERE id = ?";
                     try (
                             PreparedStatement preparedStatement1 = connection.prepareStatement(sql);
@@ -255,13 +271,15 @@ public class Manager {
                         preparedStatement1.setInt(2,updateid);
                         int rows = preparedStatement1.executeUpdate();
                         if (rows > 0) {
-                            System.out.println("\n◌◌◌◌Computer Marks updated..........◌◌◌◌");
+                            System.out.println("✅ Computer marks updated successfully.");
+                        } else {
+                            System.out.println("⚠️ Nothing was updated.");
                         }
                     }
                 }
                 case 6->{
                     System.out.println("\n▶► Enter the updated Hindi marks:");
-                    int updatedMarks = checkInt();
+                    int updatedMarks = checkMarks();
                     String sql = "Update students SET hindi = ? WHERE id = ?";
                     try (
                             PreparedStatement preparedStatement1 = connection.prepareStatement(sql);
@@ -270,21 +288,23 @@ public class Manager {
                         preparedStatement1.setInt(2,updateid);
                         int rows = preparedStatement1.executeUpdate();
                         if (rows > 0) {
-                            System.out.println("\n◌◌◌◌Hindi Marks updated..........◌◌◌◌");
+                            System.out.println("✅ Hindi marks updated successfully.");
+                        } else {
+                            System.out.println("⚠️ Nothing was updated.");
                         }
                     }
                 }
                 case 7->{
                     System.out.println("\n▶► Enter the updated English marks:");
-                    int english = checkInt();
+                    int english = checkMarks();
                     System.out.println("\n▶► Enter the updated Science marks:");
-                    int science = checkInt();
+                    int science = checkMarks();
                     System.out.println("\n▶► Enter the updated Hindi marks:");
-                    int hindi = checkInt();
+                    int hindi = checkMarks();
                     System.out.println("\n▶► Enter the updated Maths marks:");
-                    int maths = checkInt();
+                    int maths = checkMarks();
                     System.out.println("\n▶► Enter the updated Computer marks:");
-                    int computer = checkInt();
+                    int computer = checkMarks();
                     String sql = "Update students SET english = ?, maths = ? , science = ? , hindi = ? , computer = ? WHERE id = ?";
                     try (
                             PreparedStatement preparedStatement1 = connection.prepareStatement(sql);
@@ -297,16 +317,17 @@ public class Manager {
                         preparedStatement1.setInt(6,updateid);
                         int rows = preparedStatement1.executeUpdate();
                         if (rows > 0) {
-                            System.out.println("\n◌◌◌◌ Marks updated..........◌◌◌◌");
+                            System.out.println("✅ Marks updated successfully.");
+                        } else {
+                            System.out.println("⚠️ Nothing was updated.");
                         }
                     }
                 }
-                case 8->{
-                    System.out.println("\n◌◌◌◌Quit Update............◌◌◌◌");
+                case 8 -> {
+                    System.out.println("✅ Update quit.");
                     return;
                 }
-                default ->
-                    System.out.println("\n◌◌◌◌Wrong input..................◌◌◌◌");
+                default -> System.out.println("❌ Invalid Input! Please try again.");
             }
                     } catch (SQLException e) {
                         e.printStackTrace();
@@ -327,11 +348,10 @@ public class Manager {
                     {
                         preparedStatement.setInt(1,deleteid);
                         int rows = preparedStatement.executeUpdate();
-                        if(rows>0){
-                            System.out.println("\n◌◌◌◌  Student ( ID = " +deleteid+ " ) deleted successfully...... ◌◌◌◌");
-                        }
-                        else{
-                            System.out.println("\n◌◌◌◌No data found............◌◌◌◌");
+                        if (rows > 0) {
+                            System.out.println("✅ Student ( ID = " + deleteid + " ) deleted successfully.");
+                        } else {
+                            System.out.println("⚠️ No data found.");
                         }
                    } catch (SQLException e) {
                         e.printStackTrace();
