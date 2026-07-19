@@ -106,7 +106,7 @@ public class Manager {
                         rs.getInt("computer"),
                         rs.getInt("hindi")
                 );
-                System.out.println("👤 Student #" + studentNo);
+                System.out.println("    ─────────────── 👤 Student #" + studentNo + " ───────────────");
                 System.out.println(student);
                 System.out.println();
                 studentNo++;            }
@@ -128,22 +128,24 @@ public class Manager {
                 PreparedStatement preparedStatement = connection.prepareStatement(sql);
         ) {
             preparedStatement.setInt(1, searchid);
+            try(
             ResultSet rs = preparedStatement.executeQuery();
-            if (rs.next()) {
-                Student student = new Student(
-                        rs.getInt("id"),
-                        rs.getString("name"),
-                        rs.getInt("english"),
-                        rs.getInt("maths"),
-                        rs.getInt("science"),
-                        rs.getInt("computer"),
-                        rs.getInt("hindi")
-                );
-                System.out.println(student);
-            } else {
-                System.out.println("⚠️ No data found.");
+            ) {
+                if (rs.next()) {
+                    Student student = new Student(
+                            rs.getInt("id"),
+                            rs.getString("name"),
+                            rs.getInt("english"),
+                            rs.getInt("maths"),
+                            rs.getInt("science"),
+                            rs.getInt("computer"),
+                            rs.getInt("hindi")
+                    );
+                    System.out.println(student);
+                } else {
+                    System.out.println("⚠️ No data found.");
+                }
             }
-            rs.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -391,9 +393,9 @@ public class Manager {
                             arrayList.sort((s1,s2)->s2.getTotal()- s1.getTotal());
                             int rank = 1;
                             System.out.println("""
-                            ══════════════════════════════════════════════════════
-                                           🏆 STUDENT RANKING 🏆
-                            ══════════════════════════════════════════════════════
+                            ╭──────────────────────────────────────────────────────╮
+                            │              🏆  STUDENT RANKING  🏆                  │
+                            ╰──────────────────────────────────────────────────────╯
                             """);
                             for (Student student : arrayList) {
 
@@ -435,9 +437,9 @@ public class Manager {
                                 rank++;
                             }
                             System.out.println("""
-                            ══════════════════════════════════════════════════════
-                                       ◌◌◌◌ End of Ranking ◌◌◌◌
-                            ══════════════════════════════════════════════════════
+                            ─────────────────────────────────────────────────────────
+                                          ✅ End of Ranking
+                            ─────────────────────────────────────────────────────────
                             """);
                         }
                     } catch (SQLException e) {
@@ -495,13 +497,13 @@ public class Manager {
                             double average = (double) totalMarks / arrayList.size();
 
                             System.out.println("╭──────────────────────────────────────────────────────────────╮");
-                            System.out.printf("│%-60s│%n", "📊 CLASS STATISTICS");
+                            System.out.printf("│%-62s│%n", "📊 CLASS STATISTICS");
                             System.out.println("├──────────────────────────────────────────────────────────────┤");
 
                             System.out.printf("│ %-60s │%n", "Total Students : " + arrayList.size());
                             System.out.printf("│ %-60s │%n", "Topper         : " + highest.getName());
                             System.out.printf("│ %-60s │%n", "Highest Marks  : " + highest.getTotal() + " / 500");
-                            System.out.printf("│ %-60s │%n", "Lowest Student : " + lowest.getName());
+                            System.out.printf("│ %-60s │%n", "Lowest Scorer : " + lowest.getName());
                             System.out.printf("│ %-60s │%n", "Lowest Marks   : " + lowest.getTotal() + " / 500");
                             System.out.printf("│ %-60s │%n", "Average Marks  : " + String.format("%.2f", average));
 

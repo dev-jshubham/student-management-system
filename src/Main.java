@@ -13,13 +13,13 @@ public class Main {
             ███████║██║ ╚═╝ ██║███████║
             ╚══════╝╚═╝     ╚═╝╚══════╝
             
-            🎓STUDENT MANAGEMENT SYSTEM🎓
+            🎓 STUDENT MANAGEMENT SYSTEM 🎓
             """);
         while(true){
             System.out.println();
             System.out.println("""
             ╔══════════════════════════════════════════════════════════════╗
-            ║                 🎓 STUDENT MANAGEMENT SYSTEM                ║
+            ║                 🎓 STUDENT MANAGEMENT SYSTEM                 ║
             ╠══════════════════════════════════════════════════════════════╣
             ║  1. ➕  Add Student                                          ║
             ║  2. 📋  View All Students                                    ║
@@ -45,15 +45,14 @@ public class Main {
                 manager.details();
             }
             case 2-> {
-                System.out.println();
-                System.out.println("""
-                ══════════════════════════════════════════════════════
-                                📋 ALL STUDENTS
-                ══════════════════════════════════════════════════════
-                """);
-
-                manager.getDetails();
-            }
+                    System.out.println();
+                    System.out.println("""
+    ╭──────────────────────────────╮
+    │      📋 ALL STUDENTS          │
+    ╰──────────────────────────────╯
+    """);
+                    manager.getDetails();
+                }
             case 3->{
                 System.out.println();
                 System.out.println("""
@@ -63,8 +62,14 @@ public class Main {
         """);
                 manager.searchStudent();
             }
-            case 4->
+            case 4 -> {
+                System.out.println("""
+                ╭──────────────────────────────╮
+                │      ✏️ UPDATE STUDENT        │
+                ╰──────────────────────────────╯
+                """);
                 manager.updateDetail();
+            }
             case 5->{
                 System.out.println();
                 System.out.println("""
@@ -80,8 +85,8 @@ public class Main {
                 System.out.println();
                 System.out.println("""
                 ╔══════════════════════════════════════╗
-                ║      🙏 THANK YOU FOR USING SMS      ║
-                ║                                      ║
+                ║      🎓 THANK YOU FOR USING SMS      ║
+                ║                                       ║
                 ║        Have a Great Day! 😊          ║
                 ╚══════════════════════════════════════╝
                 """);

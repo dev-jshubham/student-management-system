@@ -1,11 +1,11 @@
 public class Student {
     private final int id;
     private String name;
-    private int english;
-    private int maths;
-    private int science;
-    private int computer;
-    private int hindi;
+    private final int english;
+    private final int maths;
+    private final int science;
+    private final int computer;
+    private final int hindi;
 
     public int getEnglish() {
         return english;
@@ -45,6 +45,13 @@ public class Student {
         return (getTotal()/500.0)*100;
     }
 
+    public String getStatus(){
+        if(getGrade()=='F'){
+            return "Fail";
+        }
+        return "Pass";
+    }
+
     public char getGrade(){
         double percentage = getPercentage();
         if(percentage>=90.0){
@@ -64,10 +71,6 @@ public class Student {
         }
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public int getId() {
         return id;
     }
@@ -80,7 +83,7 @@ public class Student {
     public String toString() {
         return String.format("""
 ╭─────────────────────────────────────────────────────────────╮
-│                     STUDENT PROFILE                          │
+│                 👤 STUDENT PROFILE                          │
 ├─────────────────────────────────────────────────────────────┤
 │ ID          : %-46d│
 │ Name        : %-46s│
@@ -94,6 +97,7 @@ public class Student {
 │ Total       : %-46s│
 │ Percentage  : %-46s│
 │ Grade       : %-46c│
+│ Status      : %-46s│
 ╰─────────────────────────────────────────────────────────────╯
 """,
                 id,
@@ -105,7 +109,8 @@ public class Student {
                 hindi,
                 getTotal() + " / 500",
                 String.format("%.2f %%", getPercentage()),
-                getGrade()
+                getGrade(),
+                getStatus()
         );
     }
 }
